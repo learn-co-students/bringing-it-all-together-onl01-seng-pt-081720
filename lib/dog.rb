@@ -28,6 +28,9 @@ class Dog
   end
 
   def save
+    if self.id
+      self.update
+    else
     sql = <<-SQL
       INSERT INTO dogs (name, breed)
       VALUES (?, ?)
@@ -36,7 +39,7 @@ class Dog
     DB[:conn].execute(sql, self.name, self.breed)
 
     @id = DB[:conn].last_insert_row_id
-
+  end
     self
   end
 
