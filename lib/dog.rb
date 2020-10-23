@@ -3,10 +3,10 @@ require_relative "../config/environment.rb"
 class Dog
 attr_accessor :id, :name, :breed
 
-  def initialize (id:nil, name:, breed:)
-    @id = id
-    @name = name
-    @breed = breed
+  def initialize (params)
+    @id = params[:id]
+    @name = params[:name]
+    @breed = params[:breed]
   end
 
   def self.create_table
@@ -30,7 +30,6 @@ attr_accessor :id, :name, :breed
   end
 
   def save
-    
     sql = <<-SQL
     INSERT INTO dogs (name, breed) VALUES (?, ?)
     SQL
@@ -41,14 +40,14 @@ attr_accessor :id, :name, :breed
     self
   end
 
-  def self.create (hash_of_attributes)
-    dog = Dog.new(hash_of_attributes)
+  def self.create (params)
+    dog = Dog.new(params)
     dog.save
     dog
   end
 
   def self.new_from_db(row)
-    new_dog = self.new
+    new_dog = self.new({})
     new_dog.id = row [0]
     new_dog.name = row [1]
     new_dog.breed = row [2]
